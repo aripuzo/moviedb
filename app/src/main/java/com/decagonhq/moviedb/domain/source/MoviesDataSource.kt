@@ -10,7 +10,9 @@ interface MoviesDataSource<T> {
 
     fun getLocal(): LiveData<List<T>>
 
-    suspend fun get(): List<T>?
+    suspend fun getAll(): List<T>?
+
+    suspend fun get(id: String): T?
 
     fun observe(id: Int): LiveData<T>
 

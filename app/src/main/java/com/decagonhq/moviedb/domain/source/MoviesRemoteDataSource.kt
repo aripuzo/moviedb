@@ -1,82 +1,68 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.decagonhq.moviedb.domain.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.decagonhq.moviedb.App
 import com.decagonhq.moviedb.domain.entities.Movie
-import kotlinx.coroutines.delay
+import com.decagonhq.moviedb.domain.entities.Result
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+
 
 /**
  * Implementation of the data source that adds a latency simulating network.
  */
-object MoviesRemoteDataSource : MoviesDataSource<Movie> {
+class MoviesRemoteDataSource internal constructor(
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : MoviesDataSource<Movie> {
 
-    private const val SERVICE_LATENCY_IN_MILLIS = 2000L
+    private val observableMovies = MutableLiveData<List<Movie>>()
 
-    private var TASKS_SERVICE_DATA = LinkedHashMap<String, Task>(2)
+    private val observableMovie = MutableLiveData<Movie>()
 
-    init {
-        addTask("Build tower in Pisa", "Ground looks good, no foundation work required.")
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!")
+    override fun getLocal(): LiveData<List<Movie>> {
+        return observableMovies
     }
 
-    private val observableTasks = MutableLiveData<Result<List<Task>>>()
-
-    override suspend fun refreshTasks() {
-        observableTasks.value = getTasks()
+    override fun observe(id: Int): LiveData<Movie> {
+        return observableMovie
     }
 
-    override suspend fun refreshTask(taskId: String) {
-        refreshTasks()
+    override suspend fun getAll() = suspendCoroutine<List<Movie>?> { cont ->
+        val queue = Volley.newRequestQueue(App.applicationContext())
+        val url = "https://api.themoviedb.org/4/discover/movie?sort_by=popularity.desc&api_key=d3b018581c65b4ac18d55a61391e87ac"
+
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener<String> { response ->
+                val result = Gson().fromJson(response, Result::class.java)
+                if(result != null)
+                    cont.resume(result.results)
+                else
+                    cont.resume(null)
+            },
+            Response.ErrorListener { cont.resume(null) })
+
+        queue.add(stringRequest)
     }
 
-    override fun observeTasks(): LiveData<Result<List<Task>>> {
-        return observableTasks
-    }
+    override suspend fun get(id: String) = suspendCoroutine<Movie?> { cont ->
+        val queue = Volley.newRequestQueue(App.applicationContext())
+        val url = "https://api.themoviedb.org/3/movie/$id?api_key=d3b018581c65b4ac18d55a61391e87ac"
 
-    override fun observeTask(taskId: String): LiveData<Result<Task>> {
-        return observableTasks.map { tasks ->
-            when (tasks) {
-                is Result.Loading -> Result.Loading
-                is Error -> Error(tasks.exception)
-                is Success -> {
-                    val task = tasks.data.firstOrNull() { it.id == taskId }
-                        ?: return@map Error(Exception("Not found"))
-                    Success(task)
-                }
-            }
-        }
-    }
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener<String> { response ->
+                cont.resume(Gson().fromJson(response, Movie::class.java))
+            },
+            Response.ErrorListener { cont.resume(null) })
 
-    override suspend fun getTasks(): Result<List<Task>> {
-        // Simulate network by delaying the execution.
-        val tasks = TASKS_SERVICE_DATA.values.toList()
-        delay(SERVICE_LATENCY_IN_MILLIS)
-        return Success(tasks)
-    }
-
-    override suspend fun getTask(id: String): Movie {
-        // Simulate network by delaying the execution.
-        delay(SERVICE_LATENCY_IN_MILLIS)
-        TASKS_SERVICE_DATA[taskId]?.let {
-            return Success(it)
-        }
-        return Error(Exception("Task not found"))
+        queue.add(stringRequest)
     }
 
     override suspend fun save(item: Movie) {

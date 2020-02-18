@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="episode"
+                type="com.decagonhq.moviedb.domain.entities.Movie"/>
+    </data>
+
+    <FrameLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/windowBackground">
+
+        <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:overScrollMode="never">
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:paddingTop="16dp"
+                          android:paddingLeft="16dp"
+                          android:paddingRight="16dp"
+                          android:paddingBottom="86dp"
+                          android:gravity="center">
+
+                <RelativeLayout
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="32dp">
+
+                    <ImageView
+                            android:id="@+id/image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:scaleType="centerCrop"
+                            app:imageFromUrl="@{episode.imageUrl}"/>
+
+                    <ProgressBar
+                            android:id="@+id/pgCenterCircle"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_centerInParent="true"
+                            android:visibility="invisible" />
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/artist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textSize="17sp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        tools:text="Artist"
+                        android:layout_marginTop="32dp"
+                        android:maxLines="1"
+                        android:text="@{speaker.name}"/>
+
+                <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textSize="17sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        tools:text="Title"
+                        android:layout_marginTop="8dp"
+                        android:maxLines="1"
+                        android:text="@{episode.title}"/>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp">
+
+                    <TextView
+                            android:id="@+id/time_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textSize="14sp"
+                            android:text="00.00"
+                            android:paddingLeft="2dp"
+                            android:paddingRight="2dp"/>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="2dp"
+                            android:paddingRight="2dp"
+                            android:text="/"
+                            android:textSize="14sp" />
+
+                    <TextView
+                            android:id="@+id/time_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="2dp"
+                            android:paddingRight="2dp"
+                            android:singleLine="true"
+                            android:text="00.00"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:text="Description"
+                        android:layout_marginTop="24dp"
+                        android:textStyle="bold"/>
+
+                <com.skyhope.showmoretextview.ShowMoreTextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        tools:text="Title"
+                        android:layout_marginTop="4dp"
+                        android:text="@{episode.description}"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:text="Similar"
+                        android:layout_marginTop="24dp"
+                        android:textStyle="bold"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:layout_gravity="bottom"
+                android:background="?android:attr/windowBackground"
+                app:elevation="8dp"
+                android:elevation="8dp">
+
+            <co.risepodcast.app.widgets.Slider
+                    android:id="@+id/audio_progress_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="-8dp"
+                    android:background="@color/black"
+                    app:max="100"
+                    app:min="0" />
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/skip_next_btn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_outline_skip_next"
+                    app:iconGravity="textStart"
+                    app:iconSize="36dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    app:iconTint="?android:attr/textColorPrimary"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/skip_previous_btn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_outline_skip_previous"
+                    app:iconSize="36dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    app:iconTint="?android:attr/textColorPrimary"
+                    app:iconGravity="textStart"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginStart="32dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp">
+
+                <co.risepodcast.app.widgets.PlayPauseView
+                        android:id="@+id/btn_play"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerInParent="true"
+                        android:clickable="true"
+                        android:stateListAnimator="@drawable/button_elevation"
+                        app:isCircleDraw="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/pgPlayPauseLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:layout_marginTop="16dp">
+
+                <ProgressBar
+                        android:id="@+id/pgPlayPause"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>

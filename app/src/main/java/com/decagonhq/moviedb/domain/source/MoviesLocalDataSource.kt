@@ -15,9 +15,17 @@ class MoviesLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : MoviesDataSource<Movie> {
 
-    override suspend fun get(): List<Movie>? = withContext(ioDispatcher) {
+    override suspend fun getAll(): List<Movie>? = withContext(ioDispatcher) {
         return@withContext try {
             moviesDao.getMovies()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    override suspend fun get(id: String): Movie? = withContext(ioDispatcher) {
+        return@withContext try {
+            null//moviesDao.getMovies()
         } catch (e: Exception) {
             null
         }

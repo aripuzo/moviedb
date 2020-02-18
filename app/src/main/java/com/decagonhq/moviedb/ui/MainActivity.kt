@@ -2,7 +2,6 @@ package com.decagonhq.moviedb.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.*
@@ -16,8 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
-                R.layout.activity_main)
+        val binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         //drawerLayout = binding.drawerLayout
 
         navController = Navigation.findNavController(this, R.id.auth_nav_fragment)
