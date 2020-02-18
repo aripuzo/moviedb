@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.decagonhq.moviedb.databinding.ListItemMovieBinding
 import com.decagonhq.moviedb.domain.entities.Movie
 
 /**
@@ -17,9 +18,7 @@ class MoviesAdapter: ListAdapter<Movie, MoviesAdapter.ViewHolder>(MoviesDiffCall
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mda = getItem(position)
         holder.apply {
-            bind(createLikeClickListener(position), createReplyClickListener(position), mda,
-                mda.userId == user!!.id || mda.userId == "userId")
-            itemView.tag = mda
+            bind(createClickListener(position), mda)
         }
     }
 
@@ -43,13 +42,15 @@ class MoviesAdapter: ListAdapter<Movie, MoviesAdapter.ViewHolder>(MoviesDiffCall
         private val binding: ListItemMovieBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(likeListener: View.OnClickListener, replyListener: View.OnClickListener,
+        fun bind(likeListener: View.OnClickListener,
                  item: Movie) {
             binding.apply {
-                comment = item
+                movie = item
                 clickListener = likeListener
                 executePendingBindings()
             }
         }
     }
 }
+
+typealias Callback<T> = (T) -> Unit

@@ -36,6 +36,7 @@ buildscript {
         rulesVersion = '1.0.1'
         timberVersion = '4.7.1'
         truthVersion = '1.0.1'
+        glideVersion = '4.11.0'
     }
 
     repositories {

@@ -4,28 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.decagonhq.moviedb.App
 import com.decagonhq.moviedb.databinding.FragmentListBinding
 import com.decagonhq.moviedb.viewmodel.MovieViewModel
 import com.decagonhq.moviedb.viewmodel.MovieViewModelFactory
-import com.google.android.material.snackbar.Snackbar
-import timber.log.Timber
+import kotlinx.coroutines.*
 
 class MoviesFragment : Fragment() {
 
     private val viewModel by viewModels<MovieViewModel> {
-        MovieViewModelFactory((requireContext().applicationContext as TodoApplication).taskRepository)
+        MovieViewModelFactory((requireContext().applicationContext as App).taskRepository)
     }
 
-    private val args: TasksFragmentArgs by navArgs()
+    private lateinit var viewDataBinding: FragmentListBinding
 
-    private lateinit var viewDataBinding: TasksFragBinding
+    private lateinit var listAdapter: MoviesAdapter
 
-    private lateinit var listAdapter: TasksAdapter
+    var type = 0
+
+    private val job = Job()
+
+    private val coroutineScope =
+        CoroutineScope(Dispatchers.Main + job + coroutineExceptionHandler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,80 +43,43 @@ class MoviesFragment : Fragment() {
     ): View? {
         viewDataBinding = FragmentListBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
+            type = this.type
         }
-        setHasOptionsMenu(true)
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2,
+            StaggeredGridLayoutManager.VERTICAL)
+        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        viewDataBinding.salesList.layoutManager = staggeredGridLayoutManager
+        viewDataBinding.salesList.setHasFixedSize(true)
+        viewDataBinding.salesList.adapter = listAdapter
         return viewDataBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         // Set the lifecycle owner to the lifecycle of the view
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
-        setupSnackbar()
-        setupListAdapter()
-        setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.tasksList)
-        setupNavigation()
-        setupFab()
-    }
-
-    private fun setupNavigation() {
-        viewModel.openTaskEvent.observe(this, EventObserver {
-            openTaskDetails(it)
-        })
-        viewModel.newTaskEvent.observe(this, EventObserver {
-            navigateToAddNewTask()
-        })
-    }
-
-    private fun setupSnackbar() {
-        view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-        arguments?.let {
-            viewModel.showEditResultMessage(args.userMessage)
-        }
-    }
-
-    private fun showFilteringPopUpMenu() {
-        val view = activity?.findViewById<View>(R.id.menu_filter) ?: return
-        PopupMenu(requireContext(), view).run {
-            menuInflater.inflate(R.menu.filter_tasks, menu)
-
-            setOnMenuItemClickListener {
-                viewModel.setFiltering(
-                    when (it.itemId) {
-                        R.id.active -> TasksFilterType.ACTIVE_TASKS
-                        R.id.completed -> TasksFilterType.COMPLETED_TASKS
-                        else -> TasksFilterType.ALL_TASKS
-                    }
-                )
-                true
+        if(type == 0){
+            coroutineScope.launch(Dispatchers.IO) {
+                viewModel.getPopularMovies()
             }
-            show()
+        }else{
+            viewModel.getFavoriteMovies()
         }
     }
 
-    private fun navigateToAddNewTask() {
-        val action = TasksFragmentDirections
-            .actionTasksFragmentToAddEditTaskFragment(
-                null,
-                resources.getString(R.string.add_task)
-            )
-        findNavController().navigate(action)
-    }
+    private val coroutineExceptionHandler: CoroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            coroutineScope.launch(Dispatchers.Main) {
+                //errorMessage.visibility = View.VISIBLE
+                //errorMessage.text = getString(R.string.error_message)
+            }
 
-    private fun openTaskDetails(taskId: String) {
-        val action = TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment(taskId)
-        findNavController().navigate(action)
-    }
-
-    private fun setupListAdapter() {
-        val viewModel = viewDataBinding.viewmodel
-        if (viewModel != null) {
-            listAdapter = TasksAdapter(viewModel)
-            viewDataBinding.tasksList.adapter = listAdapter
-        } else {
-            Timber.w("ViewModel not initialized when attempting to set up adapter.")
+            GlobalScope.launch { println("Caught $throwable") }
         }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 
     companion object {

@@ -5,8 +5,12 @@
 
     <data>
         <variable
-            name="t"
+            name="type"
             type="int"/>
+
+        <variable
+            name="viewmodel"
+            type="com.decagonhq.moviedb.viewmodel.MovieViewModel" />
     </data>
 
     <FrameLayout
@@ -41,23 +45,16 @@
 
         </LinearLayout>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/sales_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:requiresFadingEdge="vertical"
-                    android:clipToPadding="false"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    tools:listitem="@layout/list_item_episode_list"/>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sales_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:requiresFadingEdge="vertical"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:items="@{viewmodel.items}"
+            tools:listitem="@layout/list_item_movie"/>
 
     </FrameLayout>
 

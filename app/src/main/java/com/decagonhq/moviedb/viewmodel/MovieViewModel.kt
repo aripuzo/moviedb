@@ -30,5 +30,7 @@ class MovieViewModel( private val moviesRepository: MoviesRepository) : ViewMode
         items.postValue(moviesRepository.getMovies(true))
     }
 
-    fun getFavoriteMovies() = moviesRepository.getFavouriteMovies()
+    fun getFavoriteMovies(){
+        items.postValue(moviesRepository.getFavouriteMovies().value)
+    }
 }
