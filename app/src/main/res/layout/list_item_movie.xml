@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="movie"
-            type="com.example.moviedb.domain.entities.Movie"/>
+            type="com.example.moviedb.data.entities.Movie"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -94,7 +94,7 @@
                         android:background="@android:color/transparent"
                         android:maxLines="1"
                         tools:text="Title"
-                    android:text="@{movie.title}"
+                        android:text="@{movie.title}"
                         android:textStyle="bold"/>
 
                 <TextView
@@ -105,7 +105,7 @@
                         android:background="@android:color/transparent"
                         android:maxLines="1"
                         tools:text="Title"
-                    android:text="@{movie.releaseDate}"
+                        android:text="@{movie.releaseDate}"
                         android:textStyle="bold"/>
 
             </LinearLayout>

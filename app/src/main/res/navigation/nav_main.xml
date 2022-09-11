@@ -9,11 +9,28 @@
         android:id="@+id/searchFragment"
         android:name="com.example.moviedb.ui.SearchFragment"
         android:label="Search"
-        tools:layout="@layout/fragment_search_list"/>
+        tools:layout="@layout/fragment_search_list">
+        <action
+            android:id="@+id/action_searchFragment_to_movieDetail"
+            app:destination="@id/movieDetail" />
+    </fragment>
 
     <fragment
         android:id="@+id/tabFragment"
         android:name="com.example.moviedb.ui.TabFragment"
         android:label="TabFragment"
-        tools:layout="@layout/fragment_tab_parent"/>
+        tools:layout="@layout/fragment_tab_parent">
+        <action
+            android:id="@+id/action_tabFragment_to_movieDetail"
+            app:destination="@id/movieDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetail"
+        android:name="com.example.moviedb.ui.MovieDetailFragment"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movie"
+            app:argType="com.example.moviedb.data.entities.Movie" />
+    </fragment>
 </navigation>

@@ -9,41 +9,19 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.moviedb.App
 import com.example.moviedb.databinding.FragmentSearchListBinding
-import com.example.moviedb.domain.entities.MovieCategory
 import com.example.moviedb.utils.Status
 import com.example.moviedb.viewmodel.MovieViewModel
-import com.example.moviedb.viewmodel.MovieViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
-    private val viewModel by viewModels<MovieViewModel> {
-        MovieViewModelFactory((requireContext().applicationContext as App).taskRepository, movieCategory)
-    }
-
+    private val viewModel by viewModels<MovieViewModel> ()
     private lateinit var binding: FragmentSearchListBinding
-
     private lateinit var listAdapter: MoviesAdapter
-
-    var movieCategory = MovieCategory.LATEST
-
-    private val job = Job()
-
-    private val coroutineScope =
-        CoroutineScope(Dispatchers.Main + job)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            movieCategory = it.getSerializable("category") as MovieCategory
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +38,11 @@ class SearchFragment : Fragment() {
         binding.salesList.setHasFixedSize(true)
 
         listAdapter = MoviesAdapter()
+        listAdapter.setClickListener {
+            findNavController().navigate(
+                SearchFragmentDirections.actionSearchFragmentToMovieDetail(it)
+            )
+        }
         binding.salesList.adapter = listAdapter
         setupObserver()
         binding.txtSearch.doOnTextChanged { text, start, count, after ->
@@ -110,20 +93,5 @@ class SearchFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(category: MovieCategory) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable("category", category)
-                }
-            }
     }
 }

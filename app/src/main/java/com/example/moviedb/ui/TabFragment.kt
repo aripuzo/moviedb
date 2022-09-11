@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.moviedb.databinding.FragmentTabParentBinding
-import com.example.moviedb.domain.entities.MovieCategory
+import com.example.moviedb.data.entities.MovieCategory
 import com.google.android.material.tabs.TabLayout
 
 class TabFragment : Fragment() {

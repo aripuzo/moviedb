@@ -1,9 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.test.ext:junit-ktx:1.1.3@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0b69284c20498ac4d3151ce07c4d9b4f/transformed/jetified-junit-ktx-1.1.3/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0b69284c20498ac4d3151ce07c4d9b4f/transformed/jetified-junit-ktx-1.1.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0b69284c20498ac4d3151ce07c4d9b4f/transformed/jetified-junit-ktx-1.1.3/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/14683f7a65e50cfa4bdd5cc3f4ffde4c/transformed/jetified-junit-ktx-1.1.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/34d4e6df137d0396f837ede17b4c6073/transformed/jetified-junit-ktx-1.1.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a92f7db90fe46832e94f2e6c2a429486/transformed/jetified-junit-ktx-1.1.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/720d806fb403df01a72c3ea14bda189d/transformed/jetified-junit-ktx-1.1.3/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/720d806fb403df01a72c3ea14bda189d/transformed/jetified-junit-ktx-1.1.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/720d806fb403df01a72c3ea14bda189d/transformed/jetified-junit-ktx-1.1.3/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

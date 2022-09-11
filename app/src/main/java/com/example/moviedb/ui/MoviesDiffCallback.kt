@@ -1,7 +1,7 @@
 package com.example.moviedb.ui
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.moviedb.domain.entities.Movie
+import com.example.moviedb.data.entities.Movie
 
 class MoviesDiffCallback : DiffUtil.ItemCallback<Movie>() {
 

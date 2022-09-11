@@ -60,13 +60,25 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="sFragment">
+                  <entry key="movieDetail">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="81" />
+                            <option name="y" value="310" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="searchFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-62" />
+                            <option name="y" value="-41" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -77,8 +89,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="200" />
+                            <option name="y" value="-35" />
                           </Point>
                         </option>
                       </LayoutPositions>

@@ -7,8 +7,11 @@
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_search.xml" value="0.2296195652173913" />
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.1322463768115942" />
+        <entry key="app/src/main/res/layout/fragment_movie.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_movie_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_search_list.xml" value="0.2296195652173913" />
         <entry key="app/src/main/res/layout/fragment_tab_parent.xml" value="0.1322463768115942" />
+        <entry key="app/src/main/res/layout/list_item_actors.xml" value="0.2706812652068126" />
         <entry key="app/src/main/res/layout/list_item_movie.xml" value="0.335" />
       </map>
     </option>

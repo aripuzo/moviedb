@@ -2,7 +2,9 @@ package com.example.moviedb
 
 import android.app.Application
 import android.content.Context
-import com.example.moviedb.domain.repository.MoviesRepository
+import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -12,10 +14,12 @@ import timber.log.Timber.DebugTree
  *
  * Also, sets up Timber in the DEBUG BuildConfig. Read Timber's documentation for production setups.
  */
+@HiltAndroidApp
 class App : Application() {
 
-    val taskRepository: MoviesRepository
-        get() = ServiceLocator.provideMovieRepository(this)
+    val appScope by lazy {
+        CoroutineScope(SupervisorJob())
+    }
 
     override fun onCreate() {
         super.onCreate()

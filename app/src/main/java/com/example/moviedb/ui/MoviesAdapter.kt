@@ -6,29 +6,29 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedb.databinding.ListItemMovieBinding
-import com.example.moviedb.domain.entities.Movie
+import com.example.moviedb.data.entities.Movie
 
 /**
  * Adapter for the [RecyclerView] in [MoviesFragment].
  */
 class MoviesAdapter: ListAdapter<Movie, MoviesAdapter.ViewHolder>(MoviesDiffCallback()) {
 
-    private var clickListener: Callback<Int>? = null
+    private var clickListener: Callback<Movie>? = null
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mda = getItem(position)
         holder.apply {
-            bind(createClickListener(position), mda)
+            bind(createClickListener(mda), mda)
         }
     }
 
-    private fun createClickListener(position: Int): View.OnClickListener {
+    private fun createClickListener(movie: Movie): View.OnClickListener {
         return View.OnClickListener {
-            clickListener?.invoke(position)
+            clickListener?.invoke(movie)
         }
     }
 
-    fun setClickListener(clickListener: Callback<Int>) {
+    fun setClickListener(clickListener: Callback<Movie>) {
         this.clickListener = clickListener
     }
 

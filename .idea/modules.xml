@@ -7,6 +7,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MovieDB.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MovieDB.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MovieDB.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MovieDB.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MovieDB.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MovieDB.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/MovieDB.data.iml" filepath="$PROJECT_DIR$/.idea/modules/data/MovieDB.data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/MovieDB.data.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/data/MovieDB.data.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/MovieDB.data.main.iml" filepath="$PROJECT_DIR$/.idea/modules/data/MovieDB.data.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/MovieDB.data.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/data/MovieDB.data.unitTest.iml" />
     </modules>
   </component>
 </project>
